@@ -78,7 +78,7 @@
 												</status>
 											</http>
 											<time>
-												10000
+												20000
 											</time>
 										</wait>
 									</run>
