@@ -6,9 +6,4 @@ spring:
       server:
         git:
           uri: https://github.com/mikewojtyna/spring-training
-          search-paths: cloud/config
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
+          search-paths: cloud/cloud-config-server/config
