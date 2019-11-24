@@ -1,6 +1,7 @@
 package pro.buildmysoftware.spring.core.rest;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,5 +17,11 @@ public class TweetController {
 	@GetMapping
 	public Collection<Tweet> findAllTweets() {
 		return tweets;
+	}
+
+	@PostMapping("/exception")
+	public void throwEx() {
+		throw new RuntimeException("This method throws " +
+			"exception");
 	}
 }
