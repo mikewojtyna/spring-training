@@ -15,6 +15,7 @@
 	<modules>
 		<module>rabbitmq</module>
 		<module>cloud</module>
+		<module>core</module>
 	</modules>
 	<packaging>pom</packaging>
 
