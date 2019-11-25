@@ -2,14 +2,11 @@ package pro.buildmysoftware.spring.core.rest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,7 +14,6 @@ import java.util.stream.Stream;
 @RequestMapping("/api/tweets")
 public class TweetController {
 
-	private Collection<Tweet> tweets = new ConcurrentLinkedDeque<>();
 	private TweetRepo repo;
 
 	public TweetController(TweetRepo repo) {
@@ -29,7 +25,13 @@ public class TweetController {
 
 	@GetMapping
 	public Collection<Tweet> findAllTweets() {
-		return tweets;
+		return repo.findAll();
+	}
+
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public void createTweet(@RequestBody Tweet tweet) {
+		repo.save(tweet);
 	}
 
 	@GetMapping(params = {"page"})

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
@@ -20,6 +21,8 @@ public class TweetControllerIntegrationTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+	@Autowired
+	private TweetRepo tweetRepo;
 
 	// @formatter:off
 	@DisplayName(
@@ -30,6 +33,7 @@ public class TweetControllerIntegrationTest {
 	@Test
 	void test() throws Exception {
 		// when
+		tweetRepo.deleteAll();
 		mockMvc.perform(get("/api/tweets"))
 
 			// then
@@ -67,5 +71,34 @@ public class TweetControllerIntegrationTest {
 			.andExpect(jsonPath("$.number", is(2)))
 			.andExpect(jsonPath("$.size", is(3)))
 			.andExpect(jsonPath("$.content", hasSize(3)));
+	}
+
+	// @formatter:off
+	@DisplayName("when POST on /api/tweets, then new tweet is created")
+	// @formatter:on
+	@Test
+	void testCreate() throws Exception {
+		// given
+		tweetRepo.deleteAll();
+		String json =
+			// @formatter:off
+			"{ \"message\": \"hello\", \"author\": \"goobar\" }";
+			// @formatter:on
+
+		// when
+		mockMvc.perform(
+			// @formatter:off
+			post("/api/tweets")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(json)
+			// @formatter:on
+		)
+
+			// then
+			.andExpect(status().isCreated());
+		mockMvc.perform(get("/api/tweets")).andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(1)))
+			.andExpect(jsonPath("$[0].message", is("hello")))
+			.andExpect(jsonPath("$[0].author", is("goobar")));
 	}
 }
