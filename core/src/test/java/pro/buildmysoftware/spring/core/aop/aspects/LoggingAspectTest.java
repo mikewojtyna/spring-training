@@ -21,4 +21,17 @@ class LoggingAspectTest {
 		// then
 		// should log
 	}
+
+	@DisplayName("aop not working example")
+	@Test
+	void test2() throws Exception {
+		// given
+		HelloService helloService = new HelloService();
+
+		// when
+		helloService.method();
+
+		// then
+		// not logged
+	}
 }

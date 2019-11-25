@@ -16,7 +16,7 @@ public class LoggingAspect {
 
 	@Before(
 		// @formatter:off
-		"execution(* pro.buildmysoftware.spring.core.aop.service.*.*(..))"
+		"Pointcuts.servicePointcut()"
 		// @formatter:on
 	)
 	public void logMethodCall(JoinPoint joinPoint) {
