@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xmlns="http://maven.apache.org/POM/4.0.0"
+	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>spring-training</artifactId>
+		<groupId>pro.buildmysoftware.spring</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>pro.buildmysoftware.spring</groupId>
+	<artifactId>boot</artifactId>
+	<packaging>pom</packaging>
+	<modules>
+		<module>benchmark-spring-boot-autoconfigure</module>
+		<module>benchmark</module>
+		<module>benchmark-spring-boot-starter</module>
+		<module>benchmark-spring-boot-starter-test</module>
+	</modules>
+
+
+</project>

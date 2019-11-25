@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xmlns="http://maven.apache.org/POM/4.0.0"
+	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>boot</artifactId>
+		<groupId>pro.buildmysoftware.spring</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>pro.buildmysoftware.spring</groupId>
+	<artifactId>benchmark-spring-boot-starter</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>
+				pro.buildmysoftware.spring
+			</groupId>
+			<artifactId>
+				benchmark-spring-boot-autoconfigure
+			</artifactId>
+			<version>
+				${benchmark-spring-boot-autoconfigure.version}
+			</version>
+		</dependency>
+		<dependency>
+			<groupId>pro.buildmysoftware.spring</groupId>
+			<artifactId>benchmark</artifactId>
+			<version>${benchmark.version}</version>
+		</dependency>
+	</dependencies>
+	<properties>
+		<benchmark-spring-boot-autoconfigure.version>1.0-SNAPSHOT
+		</benchmark-spring-boot-autoconfigure.version>
+		<benchmark.version>1.0-SNAPSHOT</benchmark.version>
+	</properties>
+
+</project>
