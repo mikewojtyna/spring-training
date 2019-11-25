@@ -1,5 +1,6 @@
 package pro.buildmysoftware.spring.core.di;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +15,7 @@ class MessageServiceTest {
 	@DisplayName("given any repo, then translate")
 	// @formatter:on
 	@Test
+	@Disabled("this is just a showcase how we could write tests without " + "spring framework, not a working example")
 	void test() throws Exception {
 		// given
 		MessageKey key = key("hello.msg");
