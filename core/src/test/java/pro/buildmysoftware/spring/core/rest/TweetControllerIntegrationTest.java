@@ -131,7 +131,7 @@ public class TweetControllerIntegrationTest {
 
 		// when
 		mockMvc.perform(get("/api/tweets/{id}", savedTweet.getId()
-			.toString()))
+			.toString())).andDo(print())
 
 			// then
 			.andExpect(status().isOk())

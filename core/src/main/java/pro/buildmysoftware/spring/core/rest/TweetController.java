@@ -2,6 +2,7 @@ package pro.buildmysoftware.spring.core.rest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,9 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/tweets")
@@ -30,9 +34,13 @@ public class TweetController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Tweet> findTweet(@PathVariable("id") String uuid) {
+	// this method uses HATEOAS to produce self link reference
+	public ResponseEntity<EntityModel<Tweet>> findTweet(@PathVariable("id") String uuid) {
 		return repo.findById(UUID.fromString(uuid))
-			.map(t -> ResponseEntity.status(HttpStatus.OK).body(t))
+			.map(t -> ResponseEntity.status(HttpStatus.OK)
+				.body(new EntityModel<>(t,
+					linkTo(methodOn(TweetController.class)
+					.findTweet(uuid)).withSelfRel())))
 			.orElse(ResponseEntity.notFound().build());
 	}
 
