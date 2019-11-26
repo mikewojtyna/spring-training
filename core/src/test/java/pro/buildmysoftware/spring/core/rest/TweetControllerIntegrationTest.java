@@ -7,13 +7,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -61,10 +64,16 @@ public class TweetControllerIntegrationTest {
 	// @formatter:on
 	@Test
 	void testPage() throws Exception {
+		// given
+		// populate with some data
+		tweetRepo.saveAll(Stream
+			.generate(() -> new Tweet("message" + UUID
+				.randomUUID(), "author" + UUID.randomUUID()))
+			.limit(100).collect(Collectors.toList()));
+
 		// when
 		mockMvc.perform(get("/api/tweets").param("page", "2")
-			.param("size", "3"))
-			.andDo(MockMvcResultHandlers.print())
+			.param("size", "3")).andDo(print())
 
 			// then
 			.andExpect(status().isOk())
@@ -95,10 +104,85 @@ public class TweetControllerIntegrationTest {
 		)
 
 			// then
-			.andExpect(status().isCreated());
+			.andDo(print()).andExpect(status().isCreated());
+
 		mockMvc.perform(get("/api/tweets")).andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(1)))
 			.andExpect(jsonPath("$[0].message", is("hello")))
 			.andExpect(jsonPath("$[0].author", is("goobar")));
+	}
+
+	// @formatter:off
+	@DisplayName(
+		"GET on /api/tweets/{id}, then single tweet is returned"
+	)
+	// @formatter:on
+	@Test
+	void testSingleTweet() throws Exception {
+		// given
+		tweetRepo.deleteAll();
+		Tweet savedTweet = tweetRepo.save(new Tweet("hello", "goobar"
+		));
+
+		// when
+		mockMvc.perform(get("/api/tweets/{id}", savedTweet.getId()
+			.toString()))
+
+			// then
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.message", is(savedTweet
+				.getMessage())))
+			.andExpect(jsonPath("$.id", is(savedTweet.getId()
+				.toString())));
+	}
+
+	// @formatter:off
+	@DisplayName(
+		"GET on /api/tweets/{id}, then 404 status is returned, " +
+		"when tweet doesn't exist"
+	)
+	// @formatter:on
+	@Test
+	void testSingleTweetNotFound() throws Exception {
+		// given
+		tweetRepo.deleteAll();
+
+		// when
+		mockMvc.perform(get("/api/tweets/{id}", UUID.randomUUID()
+			.toString()))
+
+			// then
+			.andExpect(status().isNotFound());
+	}
+
+	@DisplayName("empty optional example")
+	@Test
+	void testEmpty() throws Exception {
+		mockMvc.perform(get("/api/tweets/empty")).andDo(print())
+			.andExpect(content().string("null"));
+	}
+
+	@DisplayName("search by msg")
+	@Test
+	void testSearchMsg() throws Exception {
+		// given
+		tweetRepo.deleteAll();
+		tweetRepo.save(tweetWithMsg("hello"));
+		tweetRepo.save(tweetWithMsg("hi"));
+		tweetRepo.save(tweetWithMsg("hello"));
+		tweetRepo.save(tweetWithMsg("wazzup"));
+
+		// when
+		mockMvc.perform(get("/api/tweets").param("msg", "hello"))
+
+			// then
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(2)))
+			.andExpect(jsonPath("$[0].message", is("hello")))
+			.andExpect(jsonPath("$[1].message", is("hello")));
+	}
+
+	private Tweet tweetWithMsg(String msg) {
+		return new Tweet(msg, "goobar");
 	}
 }
