@@ -5,14 +5,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -26,6 +29,8 @@ public class TweetControllerIntegrationTest {
 	private MockMvc mockMvc;
 	@Autowired
 	private TweetRepo tweetRepo;
+	@MockBean
+	private TweetAppService tweetAppService;
 
 	// @formatter:off
 	@DisplayName(
@@ -166,23 +171,19 @@ public class TweetControllerIntegrationTest {
 	@Test
 	void testSearchMsg() throws Exception {
 		// given
-		tweetRepo.deleteAll();
-		tweetRepo.save(tweetWithMsg("hello"));
-		tweetRepo.save(tweetWithMsg("hi"));
-		tweetRepo.save(tweetWithMsg("hello"));
-		tweetRepo.save(tweetWithMsg("wazzup"));
+		when(tweetAppService.findByMsg("hello"))
+			.thenReturn(List.of(tweetWithMsg("hello")));
 
 		// when
 		mockMvc.perform(get("/api/tweets").param("msg", "hello"))
 
 			// then
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$", hasSize(2)))
-			.andExpect(jsonPath("$[0].message", is("hello")))
-			.andExpect(jsonPath("$[1].message", is("hello")));
+			.andExpect(jsonPath("$", hasSize(1)))
+			.andExpect(jsonPath("$[0].message", is("hello")));
 	}
 
 	private Tweet tweetWithMsg(String msg) {
-		return new Tweet(msg, "goobar");
+		return TweetTestUtils.tweetWithMsg(msg);
 	}
 }

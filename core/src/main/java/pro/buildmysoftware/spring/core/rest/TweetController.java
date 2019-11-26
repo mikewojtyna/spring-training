@@ -16,9 +16,12 @@ import java.util.UUID;
 public class TweetController {
 
 	private TweetRepo repo;
+	private TweetAppService tweetAppService;
 
-	public TweetController(TweetRepo repo) {
+	public TweetController(TweetRepo repo,
+			       TweetAppService tweetAppService) {
 		this.repo = repo;
+		this.tweetAppService = tweetAppService;
 	}
 
 	@GetMapping
@@ -35,7 +38,7 @@ public class TweetController {
 
 	@GetMapping(params = "msg")
 	public Collection<Tweet> findByMessage(@RequestParam("msg") String msg) {
-		return repo.findByMessage(msg);
+		return tweetAppService.findByMsg(msg);
 	}
 
 	@GetMapping("/empty")
