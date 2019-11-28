@@ -8,10 +8,11 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class Client {
 
 	public static void main(String[] args) {
-		ConfigurableApplicationContext context = SpringApplication
-			.run(Client.class, args);
-		String greet = context.getBean(GreeterClient.class).greet();
-
-		System.out.println("Greeting: " + greet);
+		try (ConfigurableApplicationContext context = SpringApplication
+			.run(Client.class, args)) {
+			String greet = context.getBean(GreeterClient.class)
+				.greet();
+			System.out.println("Greeting: " + greet);
+		}
 	}
 }
