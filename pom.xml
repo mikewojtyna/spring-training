@@ -27,17 +27,6 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>
-					spring-boot-maven-plugin
-				</artifactId>
-			</plugin>
-		</plugins>
-	</build>
-
 	<properties>
 		<maven-compiler-plugin.version>3.8.1
 		</maven-compiler-plugin.version>
