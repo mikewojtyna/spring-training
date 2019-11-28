@@ -44,11 +44,11 @@ public class EurekaDiscoverer implements ApplicationRunner {
 						.printf("Calling %s service" + " to get all greetings \n", clientName);
 
 					Greetings greetings = restTemplate
-						.getForObject(String
-							.format("http://%s" +
-								"/api" +
-								"/greetings",
-								clientName),
+						.getForObject(String.format(
+							// @formatter:off
+								"http://%s/api/greetings",
+								// @formatter:on
+							clientName),
 							Greetings.class);
 
 					System.out

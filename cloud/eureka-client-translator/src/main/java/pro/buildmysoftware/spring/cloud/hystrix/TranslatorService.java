@@ -18,9 +18,11 @@ public class TranslatorService {
 
 	@HystrixCommand(fallbackMethod = "defaultMsg")
 	public String translate() {
-		Greetings greetings = restTemplate.getForObject(String
-			.format("http://%s/api" + "/greetings",
-				greetingsClient), Greetings.class);
+		Greetings greetings = restTemplate.getForObject(String.format(
+			// @formatter:off
+				"http://%s/api/greetings",
+				// @formatter:on
+			greetingsClient), Greetings.class);
 		String msg = greetings.getMsg();
 		if (msg.contains("hello")) {
 			msg = "Cześć!";
