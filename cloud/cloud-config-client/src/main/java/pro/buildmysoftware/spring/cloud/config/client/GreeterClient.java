@@ -8,8 +8,11 @@ import org.springframework.stereotype.Component;
 @RefreshScope
 public class GreeterClient {
 
-	@Value("${hello.message}")
 	private String greeting;
+
+	public GreeterClient(@Value("${hello.message}") String greeting) {
+		this.greeting = greeting;
+	}
 
 	public String greet() {
 		return greeting;
