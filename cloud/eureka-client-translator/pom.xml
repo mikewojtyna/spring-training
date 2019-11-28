@@ -37,12 +37,6 @@
 				spring-cloud-starter-netflix-eureka-client
 			</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>pro.buildmysoftware.spring.cloud</groupId>
-			<artifactId>eureka-client-greetings</artifactId>
-			<version>${eureka-client-greetings.version}</version>
-			<scope>compile</scope>
-		</dependency>
 	</dependencies>
 	<properties>
 		<eureka-client-greetings.version>1.0-SNAPSHOT

@@ -3,7 +3,6 @@ package pro.buildmysoftware.spring.cloud.hystrix;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import pro.buildmysoftware.spring.cloud.eureka.client.greetings.Greetings;
 
 @Component
 public class TranslatorService {
