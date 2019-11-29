@@ -19,6 +19,7 @@
 		<module>boot</module>
 		<module>integration</module>
 		<module>security</module>
+		<module>ddd</module>
 	</modules>
 	<packaging>pom</packaging>
 
