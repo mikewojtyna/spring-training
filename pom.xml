@@ -18,6 +18,7 @@
 		<module>core</module>
 		<module>boot</module>
 		<module>integration</module>
+		<module>security</module>
 	</modules>
 	<packaging>pom</packaging>
 
