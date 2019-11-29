@@ -17,6 +17,7 @@
 		<module>cloud</module>
 		<module>core</module>
 		<module>boot</module>
+		<module>integration</module>
 	</modules>
 	<packaging>pom</packaging>
 
