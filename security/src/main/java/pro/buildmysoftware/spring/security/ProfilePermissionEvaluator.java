@@ -30,9 +30,8 @@ public class ProfilePermissionEvaluator implements PermissionEvaluator {
 			return false;
 		}
 		return profileRepository.findById((UUID) objectId)
-			.map(profile -> {
-				return profile.getOwner()
-					.equals(authentication.getName());
-			}).orElse(false);
+			.map(profile -> profile.getOwner()
+				.equals(authentication.getName()))
+			.orElse(false);
 	}
 }

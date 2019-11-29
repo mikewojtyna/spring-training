@@ -5,15 +5,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 public class Profile {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String UUID;
+	private UUID id;
 	private String name;
 	private String owner;
+
+	@Override
+	public String toString() {
+		return "Profile{" + "id=" + id + ", name='" + name + '\'' + ","
+			+ " owner='" + owner + '\'' + '}';
+	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -24,17 +31,20 @@ public class Profile {
 			return false;
 		}
 		Profile profile = (Profile) o;
-		return Objects.equals(UUID, profile.UUID);
+		return Objects.equals(id, profile.id);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(UUID);
+		return Objects.hash(id);
 	}
 
-	@Override
-	public String toString() {
-		return "Profile{" + "UUID='" + UUID + '\'' + ", name='" + name + '\'' + ", owner='" + owner + '\'' + '}';
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
 	}
 
 	public String getOwner() {
@@ -43,14 +53,6 @@ public class Profile {
 
 	public void setOwner(String owner) {
 		this.owner = owner;
-	}
-
-	public String getUUID() {
-		return UUID;
-	}
-
-	public void setUUID(String UUID) {
-		this.UUID = UUID;
 	}
 
 	public String getName() {

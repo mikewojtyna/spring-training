@@ -1,10 +1,9 @@
 package pro.buildmysoftware.spring.security;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/secured")
@@ -19,5 +18,12 @@ public class SecuredServiceController {
 	@GetMapping
 	public String securedMethod(Principal principal) {
 		return securedService.myProfile(principal);
+	}
+
+	@PostMapping
+	public void changeProfileName(@RequestBody ChangeProfileCommand dto) {
+		securedService
+			.changeProfileName(UUID.fromString(dto.getId()), dto
+				.getNewName());
 	}
 }
